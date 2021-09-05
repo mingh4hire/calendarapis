@@ -44,8 +44,12 @@ namespace calendar.Controllers
         }
 
         [HttpGet("GetEvents")]
-        public IEnumerable<dynamic> GetCalendar()
+        public IEnumerable<dynamic> GetCalendar(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "dan";
+            }
             //(localdb)\ProjectsV13
             ///(localdb)\ProjectsV13 (DESKTOP-SK5QC59\jerem)
             ///Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;
@@ -53,8 +57,8 @@ namespace calendar.Controllers
 
             using (var connection = new SqlConnection(@"Server = (localdb)\ProjectsV13; Database = master;"))
             {
-                SqlCommand command = new SqlCommand("select * from calendarEvent where creator = @creator", connection);
-                command.Parameters.AddWithValue("@creator", "dan");
+                SqlCommand command = new SqlCommand("select * from calendarEvent c left join eventType e on c.eventtype = e.name  where c.creator = @creator", connection);
+                command.Parameters.AddWithValue("@creator", name);
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 var events = new List<dynamic>();
