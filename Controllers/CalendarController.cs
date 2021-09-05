@@ -74,7 +74,8 @@ namespace calendar.Controllers
                             endDate = reader["endDate"],
                             eventTitle = reader["eventTitle"],
                             eventDescription = reader["eventDescription"],
-                            eventType = reader["eventType"]
+                            eventType = reader["eventType"],
+                            color = reader["color"]
                         });
                     }
                     return events;
